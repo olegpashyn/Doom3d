@@ -138,7 +138,7 @@ namespace Doom3d
             for (var i = 0; i < botRowInvaders.Count; i++)
             {
                 if (randomGen.Next() % 200 == 13)
-                    ;// botRowInvaders[i].Bomb();
+                    botRowInvaders[i].Bomb();
             }
         }
 
