@@ -62,5 +62,11 @@
     <Compile Include="ResetCommand.cs" />
     <Compile Include="Shoot.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="media\mouse_squeek.wav" />
+    <Content Include="media\Shoot.wav">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

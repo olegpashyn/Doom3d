@@ -12,5 +12,10 @@
             Left,
             Right
         }
+
+        public enum Sound
+        {
+            Shoot
+        }
     }
 }

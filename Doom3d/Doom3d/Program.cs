@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Media;
 using System.Threading;
 using static Doom3d.Constants;
 
@@ -151,6 +152,7 @@ namespace Doom3d
 
                     case ConsoleKey.Spacebar:
                         _userCommands.Enqueue(new Shoot());
+                        PlaySound(Sound.Shoot);
                         break;
 
                     case ConsoleKey.Escape:
@@ -162,6 +164,22 @@ namespace Doom3d
                 }
                 Thread.Sleep(Constants.LoopWaitingTimeMs);
             }
+        }
+
+        private static void PlaySound(Sound sound)
+        {
+            string fileName = "";
+
+            switch (sound)
+            {
+                case Sound.Shoot:
+                    fileName = "Shoot.wav";
+                    break;
+            }
+
+            var soundLocation = Environment.CurrentDirectory + @"\media\";
+            var sp = new SoundPlayer(soundLocation + fileName);
+            sp.Play();
         }
     }
 }
