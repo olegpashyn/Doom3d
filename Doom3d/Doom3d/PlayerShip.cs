@@ -1,4 +1,6 @@
-﻿namespace Doom3d
+﻿using System;
+
+namespace Doom3d
 {
     public class PlayerShip : GameObject
     {
@@ -8,11 +10,11 @@
 
         public void Execute(IShipCommand command)
         {
-            if (command is MoveLeft)
+            if ((command is MoveLeft) && (X >= 1))
             {
                 X = X - 1;
             }
-            else if (command is MoveRight)
+            else if ((command is MoveRight) && (X <= (Console.WindowWidth - 7)))
             {
                 X = X + 1;
             }
