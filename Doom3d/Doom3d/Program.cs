@@ -5,113 +5,17 @@ using System.Threading;
 
 namespace Doom3d
 {
-    public class Constants
-    {
-        public const int LoopWaitingTimeMs = 250;
-    }
-
-    public interface IRenderable
-    {
-        int Width { get; }
-        int Height { get; }
-
-        void Render();
-    }
-
-    public interface ICommand
-    {
-    }
-
-    public class ResetCommand : ICommand { }
-
-    public class EscapeCommand : ICommand { }
-
-    public interface IShipCommand : ICommand { }
-
-    public class MoveLeft : IShipCommand { }
-
-    public class MoveRight : IShipCommand { }
-
-    public class Shoot : IShipCommand { }
-
-    public abstract class GameObject
-    {
-        protected GameObject(int x, int y, IRenderable renderable)
-        {
-            X = x;
-            Y = y;
-            Renderable = renderable;
-        }
-
-        public int X { get; protected set; }
-        public int Y { get; protected set; }
-
-        public IRenderable Renderable { get; }
-    }
-
-    public class PlayerShipUi : IRenderable
-    {
-        public int Width { get; } = 3;
-
-        public int Height { get; } = 2;
-
-        public void Render()
-        {
-            for (var i = 0; i < Width; i++)
-                for (var j = 0; j < Height; j++)
-                    Console.Write("X");
-        }
-    }
-
-    public class PlayerShip : GameObject
-    {
-        public PlayerShip(int initialX, int initialY) : base(initialX, initialY, new PlayerShipUi())
-        {
-        }
-
-        public void Execute(IShipCommand command)
-        {
-            if (command is MoveLeft)
-            {
-                X = X - 1;
-            }
-            else if (command is MoveRight)
-            {
-                X = X + 1;
-            }
-        }
-    }
-
-    public class InvaderUi1 : IRenderable
-    {
-        public int Width => 1;
-
-        public int Height => 1;
-
-        public void Render() => Console.Write("O");
-    }
-
-    public class Invader : GameObject
-    {
-        public Invader(int initialX, int initialY, IRenderable renderable) : base(initialX, initialY, renderable)
-        {
-        }
-
-        public void Execute()
-        {
-        }
-    }
-
     public class Program
     {
         private static readonly ConcurrentQueue<ICommand> _userCommands = new ConcurrentQueue<ICommand>();
-        private static IList<Invader> _levelObjects = new List<Invader>();
+        private static List<Invader> _invaders = new List<Invader>();
+        private static List<GameObject> _gameobjects = new List<GameObject>();
         private static PlayerShip _ship;
 
         public static void Main()
         {
             Reset();
-            var inputThread = new Thread(InputManagerLoop) { IsBackground = false };
+            var inputThread = new Thread(InputManagerLoop) { IsBackground = true };
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
             inputThread.Start();
             mainLoopThread.Start();
@@ -122,18 +26,34 @@ namespace Doom3d
             while (true)
             {
                 CommandExecute();
+                DetectCollisions();
                 Render();
-                Thread.Sleep(250);
+                Thread.Sleep(Constants.LoopWaitingTimeMs);
+            }
+        }
+
+        public static void DetectCollisions()
+        {
+            foreach (var gameobject in _gameobjects)
+            {
             }
         }
 
         private static void Reset()
         {
+            _gameobjects = new List<GameObject>();
             _ship = new PlayerShip(Console.WindowWidth / 2, Console.WindowHeight - 2);
-            _levelObjects = new List<Invader>();
+            _invaders = new List<Invader>();
+            ArrangeInvaders();
+            _gameobjects.Add(_ship);
+            _invaders.ForEach(g => _gameobjects.Add(g));
+        }
+
+        private static void ArrangeInvaders()
+        {
             for (int i = 0; i < 10; i++)
             {
-                _levelObjects.Add(new Invader(2 * i, 10, new InvaderUi1()));
+                _invaders.Add(new Invader(4 * i, 10, new InvaderUi1()));
             }
         }
 
@@ -143,7 +63,7 @@ namespace Doom3d
             Console.SetCursorPosition(_ship.X, _ship.Y);
             _ship.Renderable.Render();
 
-            foreach (var invader in _levelObjects)
+            foreach (var invader in _invaders)
             {
                 Console.SetCursorPosition(invader.X, invader.Y);
                 invader.Renderable.Render();

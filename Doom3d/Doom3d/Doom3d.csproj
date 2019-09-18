@@ -44,8 +44,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
+    <Compile Include="EscapeCommand.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="ICommand.cs" />
+    <Compile Include="Invader.cs" />
+    <Compile Include="InvaderUi1.cs" />
+    <Compile Include="IRenderable.cs" />
+    <Compile Include="IShipCommand.cs" />
+    <Compile Include="MoveLeft.cs" />
+    <Compile Include="MoveRight.cs" />
+    <Compile Include="PlayerShip.cs" />
+    <Compile Include="PlayerShipUi.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResetCommand.cs" />
+    <Compile Include="Shoot.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
