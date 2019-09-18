@@ -75,11 +75,10 @@ namespace Doom3d
 
             while (true)
             {
-                if (_ship.Exploded)
+                if (_ship.Exploded || MiceReachedBottom())
                 {
                     GameOver();
-                    while (Console.ReadKey(true).Key != ConsoleKey.Escape)
-                        ;
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
                     break;
                 }
                 else
@@ -110,6 +109,11 @@ namespace Doom3d
             }
         }
 
+        private static bool MiceReachedBottom()
+        {
+            return GameObjects.GameObjects.OfType<Invader>().Any(i => !i.Exploded && (i.Y + i.Renderable.Height == Console.WindowHeight - 1));
+        }
+
         private static void InvadersBomb()
         {
             var botRowInvaders = new List<Invader>();
@@ -134,7 +138,7 @@ namespace Doom3d
             for (var i = 0; i < botRowInvaders.Count; i++)
             {
                 if (randomGen.Next() % 200 == 13)
-                    botRowInvaders[i].Bomb();
+                    ;// botRowInvaders[i].Bomb();
             }
         }
 
