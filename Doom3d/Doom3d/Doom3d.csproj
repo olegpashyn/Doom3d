@@ -58,6 +58,7 @@
     <Compile Include="IShipCommand.cs" />
     <Compile Include="MoveLeft.cs" />
     <Compile Include="MoveRight.cs" />
+    <Compile Include="NativeKeyboard.cs" />
     <Compile Include="PlayerShip.cs" />
     <Compile Include="PlayerShipExploded.cs" />
     <Compile Include="PlayerShipUi.cs" />

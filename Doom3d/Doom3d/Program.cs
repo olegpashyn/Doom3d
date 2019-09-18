@@ -228,33 +228,19 @@ namespace Doom3d
 
         private static void CheckKey()
         {
-            if (!Console.KeyAvailable)
+            if (NativeKeyboard.IsKeyDown(KeyCode.Left))
             {
-                return;
+                _moveCommand = new MoveLeft();
+            }
+            else if (NativeKeyboard.IsKeyDown(KeyCode.Right))
+            {
+                _moveCommand = new MoveRight();
             }
 
-            var key = Console.ReadKey(true);
-            switch (key.Key)
+            if (NativeKeyboard.IsKeyDown(KeyCode.Space))
             {
-                case ConsoleKey.LeftArrow:
-                    _moveCommand = new MoveLeft();
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    _moveCommand = new MoveRight();
-                    break;
-
-                case ConsoleKey.Spacebar:
-                    PlaySound(Sound.Shoot);
-                    _shootCommand = new Shoot();
-                    break;
-
-                case ConsoleKey.Escape:
-                    _moveCommand = new EscapeCommand();
-                    return;
-
-                default:
-                    break;
+                PlaySound(Sound.Shoot);
+                _shootCommand = new Shoot();
             }
         }
 
