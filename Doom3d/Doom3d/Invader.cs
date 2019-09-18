@@ -15,8 +15,9 @@ namespace Doom3d
             Renderable.Render(renderTarget, new Point(X, Y));
         }
 
-        public void Execute()
+        public void Bomb()
         {
+            Program.GameObjects.AddGameObject(new Bomb(X + Renderable.Width / 2, Y + Renderable.Height / 2 + 3, new BombUi()));
         }
 
         public void Explode()

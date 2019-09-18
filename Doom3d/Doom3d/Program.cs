@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading;
 using static Doom3d.Constants;
@@ -92,12 +93,40 @@ namespace Doom3d
                             MoveInvaders(Direction.Down);
                         }
                     }
+                    InvadersBomb();
                     DetectCollisions();
                     Render();
                 }
                 Thread.Sleep(LoopWaitingTimeMs);
 
                 CheckKey();
+            }
+        }
+
+        private static void InvadersBomb()
+        {
+            var botRowInvaders = new List<Invader>();
+            foreach (var invader in _invaders)
+            {
+                if (botRowInvaders.Any(b => b.X == invader.X))
+                    continue;
+
+                Invader maxY = invader;
+                foreach (var inv in _invaders)
+                {
+                    if (inv.X == invader.X && inv.Y < invader.Y)
+                        continue;
+                    else if (inv.X == invader.X)
+                        maxY = inv;
+                }
+                botRowInvaders.Add(maxY);
+            }
+
+            var randomGen = new Random();
+            for (var i = 0; i < botRowInvaders.Count; i++)
+            {
+                if (randomGen.Next() % 200 == 13)
+                    botRowInvaders[i].Bomb();
             }
         }
 

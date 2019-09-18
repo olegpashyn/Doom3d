@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bomb.cs" />
+    <Compile Include="BombUi.cs" />
     <Compile Include="Bullet.cs" />
     <Compile Include="BulletUi.cs" />
     <Compile Include="Constants.cs" />
