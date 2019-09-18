@@ -29,7 +29,7 @@ namespace Doom3d
             {
                 for (var i = _gameObjects.Count - 1; i >= 0; i--)
                 {
-                    if (!_gameObjects[i].IsInWindow(Program.RenderSize))
+                    if (!_gameObjects[i].IsInWindow(Program.RenderSize) || ((_gameObjects[i] as IExplode)?.Exploded ?? false))
                     {
                         _gameObjects.RemoveAt(i);
                     }
@@ -135,7 +135,7 @@ namespace Doom3d
 
         private static void ArrangeInvaders()
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 10; i++)
             {
                 _invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10, new Animatable(_invaderSize,
                     new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));

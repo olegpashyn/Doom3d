@@ -5,6 +5,8 @@ namespace Doom3d
 {
     public interface IExplode
     {
+        bool Exploded { get; }
+
         void Explode();
     }
 
