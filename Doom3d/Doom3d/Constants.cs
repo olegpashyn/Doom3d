@@ -4,7 +4,6 @@
     {
         public const int LoopWaitingTimeMs = 20;
         public const int LoopWaitingBound = 5;
-        public const int InvadersMoveSize = 10;
 
         public enum Direction
         {

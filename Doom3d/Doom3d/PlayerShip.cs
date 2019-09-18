@@ -21,7 +21,7 @@ namespace Doom3d
             {
                 X = X - 1;
             }
-            else if ((command is MoveRight) && (X <= (Console.WindowWidth - 7)))
+            else if ((command is MoveRight) && (X + Renderable.Width <= (Console.WindowWidth - 1)))
             {
                 X = X + 1;
             }

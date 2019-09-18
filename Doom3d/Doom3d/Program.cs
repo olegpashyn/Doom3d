@@ -54,10 +54,12 @@ namespace Doom3d
         private static Size _invaderSize = new Size(5, 3);
         private static Size _shipSize = new Size(7, 3);
         public static Size RenderSize = new Size(100, 40);
+        public static readonly int InvaderCount = 10;
+
+        public static int InvadersMoveSize = 10;
 
         public static void Main()
         {
-            Console.SetWindowSize(120, 40);
             RenderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
             Reset();
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
@@ -67,12 +69,13 @@ namespace Doom3d
         public static void MainGameLoop()
         {
             var invMovingDirections = Direction.Right;
+            InvadersMoveSize = Console.BufferWidth - (InvaderCount * (_invaderSize.Width + 1));
             var invMovingCounter = InvadersMoveSize;
             var loopCounter = LoopWaitingBound;
 
             while (true)
             {
-                if (_ship.Exploded)
+                if (_ship.Exploded || MiceReachedBottom())
                 {
                     GameOver();
                     while (Console.ReadKey(true).Key != ConsoleKey.Escape);
@@ -110,6 +113,11 @@ namespace Doom3d
 
                 CheckKey();
             }
+        }
+
+        private static bool MiceReachedBottom()
+        {
+            return GameObjects.GameObjects.OfType<Invader>().Any(i => !i.Exploded && (i.Y + i.Renderable.Height == Console.WindowHeight - 1));
         }
 
         private static void InvadersBomb()
@@ -192,7 +200,7 @@ namespace Doom3d
         private static List<Invader> ArrangeInvaders()
         {
             var invaders = new List<Invader>();
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < InvaderCount; i++)
             {
                 invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10, new Animatable(_invaderSize,
                     new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
@@ -234,33 +242,19 @@ namespace Doom3d
 
         private static void CheckKey()
         {
-            if (!Console.KeyAvailable)
+            if (NativeKeyboard.IsKeyDown(KeyCode.Left))
             {
-                return;
+                _moveCommand = new MoveLeft();
+            }
+            else if (NativeKeyboard.IsKeyDown(KeyCode.Right))
+            {
+                _moveCommand = new MoveRight();
             }
 
-            var key = Console.ReadKey(true);
-            switch (key.Key)
+            if (NativeKeyboard.IsKeyDown(KeyCode.Space))
             {
-                case ConsoleKey.LeftArrow:
-                    _moveCommand = new MoveLeft();
-                    break;
-
-                case ConsoleKey.RightArrow:
-                    _moveCommand = new MoveRight();
-                    break;
-
-                case ConsoleKey.Spacebar:
-                    PlaySound(Sound.Shoot);
-                    _shootCommand = new Shoot();
-                    break;
-
-                case ConsoleKey.Escape:
-                    _moveCommand = new EscapeCommand();
-                    return;
-
-                default:
-                    break;
+                PlaySound(Sound.Shoot);
+                _shootCommand = new Shoot();
             }
         }
 
