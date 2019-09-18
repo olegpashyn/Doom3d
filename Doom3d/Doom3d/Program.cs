@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -18,7 +19,8 @@ namespace Doom3d
 
     public class Program
     {
-        private readonly IList<ICommand> _userCommands = new List<ICommand>();
+        private static readonly ConcurrentQueue<ICommand> _userCommands = new ConcurrentQueue<ICommand>();
+        private static readonly IList<GameObject> _levelObjects = new List<GameObject>();
 
         public static void Main()
         {
@@ -32,6 +34,7 @@ namespace Doom3d
         {
             while (true)
             {
+                CommandExecute();
                 Render();
                 Thread.Sleep(1000);
             }
@@ -39,6 +42,13 @@ namespace Doom3d
 
         private static void Render()
         {
+        }
+
+        private static void CommandExecute()
+        {
+            while (_userCommands.TryDequeue(out ICommand result))
+            {
+            }
         }
 
         public static void InputManagerLoop()
