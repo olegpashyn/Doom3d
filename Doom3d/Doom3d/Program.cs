@@ -44,6 +44,7 @@ namespace Doom3d
     {
         private static ICommand _moveCommand = null;
         private static ICommand _shootCommand = null;
+        private static int _level = 1;
 
         //private static List<Invader> _invaders = new List<Invader>();
         private static RenderTarget _renderTarget;
@@ -93,16 +94,25 @@ namespace Doom3d
                     {
                         loopCounter = LoopWaitingBound;
 
-                        CommandExecute();
-                        if (--invMovingCounter > 0)
+                        if (GameObjects.GameObjects.OfType<Invader>().Count() > 0)
                         {
-                            MoveInvaders(invMovingDirections);
+                            CommandExecute();
+                            if (--invMovingCounter > 0)
+                            {
+                                MoveInvaders(invMovingDirections);
+                            }
+                            else
+                            {
+                                invMovingCounter = InvadersMoveSize;
+                                invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
+                                MoveInvaders(Direction.Down);
+                            }
                         }
                         else
                         {
+                            SetInvaders(++_level);
+                            invMovingDirections = Direction.Right;
                             invMovingCounter = InvadersMoveSize;
-                            invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
-                            MoveInvaders(Direction.Down);
                         }
                     }
                     InvadersBomb();
@@ -191,19 +201,29 @@ namespace Doom3d
         {
             var gameobjects = new List<GameObject>();
             _ship = new PlayerShip(new Point(RenderSize.Width / 2, RenderSize.Height - _shipSize.Height), _shipSize, new[] { ImageLibrary.OpenEyedCat, ImageLibrary.ClosedEyedCat });
-            var invaders = ArrangeInvaders();
-            invaders.ForEach(g => gameobjects.Add(g));
+            //var invaders = ArrangeInvaders(1);
+            //invaders.ForEach(g => gameobjects.Add(g));
             GameObjects = new ObjectContainer(gameobjects);
             GameObjects.AddGameObject(_ship);
+            SetInvaders(_level);
         }
 
-        private static List<Invader> ArrangeInvaders()
+        private static void SetInvaders(int level)
+        {
+            var invaders = ArrangeInvaders(level);
+            invaders.ForEach(g => GameObjects.AddGameObject(g));
+        }
+
+        private static List<Invader> ArrangeInvaders(int level)
         {
             var invaders = new List<Invader>();
-            for (int i = 0; i < InvaderCount; i++)
+            for (int lev = 0; lev < level; lev++)
             {
-                invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10, new Animatable(_invaderSize,
-                    new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
+                for (int i = 0; i < InvaderCount; i++)
+                {
+                    invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10 - 5 * lev, new Animatable(_invaderSize,
+                        new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
+                }
             }
             return invaders;
         }
