@@ -5,6 +5,8 @@
         public const int LoopWaitingTimeMs = 20;
         public const int LoopWaitingBound = 5;
 
+        public const int LevelCount = 5;
+
         public enum Direction
         {
             Up,

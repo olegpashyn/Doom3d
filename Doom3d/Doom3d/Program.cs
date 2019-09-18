@@ -55,7 +55,7 @@ namespace Doom3d
         private static Size _invaderSize = new Size(5, 3);
         private static Size _shipSize = new Size(7, 3);
         public static Size RenderSize = new Size(120, 50);
-        public static readonly int InvaderCount = 10;
+        public static readonly int InvaderCount = 15;
 
         public static int InvadersMoveSize = 10;
 
@@ -63,10 +63,14 @@ namespace Doom3d
 
         public static void Main()
         {
+            Console.SetWindowSize(RenderSize.Width, RenderSize.Height);
+            Console.SetWindowPosition(0, 0);
+
             Console.Clear();
             Console.WriteLine(File.ReadAllText(@"media\start frame.txt"));
             while (Console.ReadKey().Key != ConsoleKey.Enter) ;
             Console.Clear();
+
             RenderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
             Reset();
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
@@ -95,7 +99,7 @@ namespace Doom3d
                 }
                 else if (GameObjects.GameObjects.OfType<Invader>().Count() == 0)
                 {
-                    if (_level >= 3)
+                    if (_level >= Constants.LevelCount)
                     {
                         Win();
                         while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
