@@ -15,8 +15,11 @@
 
         public enum Sound
         {
-            Shoot
-            Kill
+            Shoot,
+            Kill,
+            Lost,
+            Win,
+            Theme
         }
     }
 }

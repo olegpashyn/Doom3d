@@ -179,6 +179,18 @@ namespace Doom3d
                 case Sound.Kill:
                     fileName = "mouse_squeek.wav";
                     break;
+
+                case Sound.Lost:
+                    fileName = "lost.wav";
+                    break;
+
+                case Sound.Win:
+                    fileName = "win.wav";
+                    break;
+
+                case Sound.Theme:
+                    fileName = "theme.wav";
+                    break;
             }
 
             var soundLocation = Environment.CurrentDirectory + @"\media\";

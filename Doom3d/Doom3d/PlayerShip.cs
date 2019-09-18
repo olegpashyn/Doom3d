@@ -29,6 +29,7 @@ namespace Doom3d
         public void Explode()
         {
             Exploded = true;
+            Program.PlaySound(Constants.Sound.Lost);
             //Renderable = new PlayerShipExploded();
         }
 

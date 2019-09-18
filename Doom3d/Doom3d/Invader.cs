@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using static Doom3d.Constants;
 
 namespace Doom3d
 {
@@ -20,7 +19,7 @@ namespace Doom3d
 
         public void Explode()
         {
-            Program.PlaySound(Sound.Kill);
+            Program.PlaySound(Constants.Sound.Kill);
             throw new System.NotImplementedException();
         }
     }
