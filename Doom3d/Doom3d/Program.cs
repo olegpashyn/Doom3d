@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
+using static Doom3d.Constants;
 
 namespace Doom3d
 {
@@ -23,9 +24,22 @@ namespace Doom3d
 
         public static void MainGameLoop()
         {
+            var invMovingDirections = Direction.Right;
+            var invMovingCounter = InvadersMoveSize;
+
             while (true)
             {
                 CommandExecute();
+                if (invMovingCounter-- > 0)
+                {
+                    MoveInvaders(invMovingDirections);
+                }
+                else
+                {
+                    invMovingCounter = InvadersMoveSize;
+                    invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
+                    MoveInvaders(Direction.Down);
+                }
                 DetectCollisions();
                 Render();
                 Thread.Sleep(Constants.LoopWaitingTimeMs);
@@ -55,6 +69,11 @@ namespace Doom3d
             {
                 _invaders.Add(new Invader(4 * i, 10, new InvaderUi1()));
             }
+        }
+
+        private static void MoveInvaders(Direction direction)
+        {
+            _invaders.ForEach(inv => inv.Move(direction));
         }
 
         private static void Render()
