@@ -1,4 +1,5 @@
-﻿using static Doom3d.Constants;
+﻿using System.Drawing;
+using static Doom3d.Constants;
 
 namespace Doom3d
 {
@@ -42,6 +43,15 @@ namespace Doom3d
                     break;
             }
         }
+
+        public bool IsInWindow(Size windowSize)
+        {
+            if (X < 0 || Y < 0)
+                return false;
+
+            return !(X + Renderable.Width > windowSize.Width || Y + Renderable.Height > windowSize.Height);
+        }
+
         public abstract void Update(RenderTarget renderTarget);
     }
 }

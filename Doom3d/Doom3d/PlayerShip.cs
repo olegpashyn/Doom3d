@@ -25,12 +25,16 @@ namespace Doom3d
             {
                 X = X + 1;
             }
+            else if (command is Shoot)
+            {
+                Program.GameObjects.AddGameObject(new Bullet(X + Renderable.Width / 2, Y - Renderable.Height / 2 - 1, new BulletUi()));
+            }
         }
 
         public void Explode()
         {
             Exploded = true;
-            //Renderable = new PlayerShipExploded();
+            Renderable = new PlayerShipExploded();
         }
 
         public bool Exploded { get; private set; }

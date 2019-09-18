@@ -5,7 +5,7 @@ namespace Doom3d
 {
     public class RenderTarget
     {
-        char[,] _surface;
+        private char[,] _surface;
 
         public RenderTarget(Size size)
         {
@@ -14,10 +14,11 @@ namespace Doom3d
 
         public void Put(int x, int y, char symbol)
         {
-            if (x >= _surface.GetLength(0) || y >= _surface.GetLength(1))
-            {
+            if (x < 0 || y < 0)
                 return;
-            }
+
+            if (x >= _surface.GetLength(0) || y >= _surface.GetLength(1))
+                return;
 
             _surface[x, y] = symbol;
         }

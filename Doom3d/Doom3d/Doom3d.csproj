@@ -45,6 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bullet.cs" />
+    <Compile Include="BulletUi.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="EscapeCommand.cs" />
     <Compile Include="GameObject.cs" />
@@ -55,6 +57,7 @@
     <Compile Include="MoveLeft.cs" />
     <Compile Include="MoveRight.cs" />
     <Compile Include="PlayerShip.cs" />
+    <Compile Include="PlayerShipExploded.cs" />
     <Compile Include="PlayerShipUi.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
