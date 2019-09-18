@@ -166,7 +166,7 @@ namespace Doom3d
             }
         }
 
-        private static void PlaySound(Sound sound)
+        public static void PlaySound(Sound sound)
         {
             string fileName = "";
 
@@ -174,6 +174,10 @@ namespace Doom3d
             {
                 case Sound.Shoot:
                     fileName = "Shoot.wav";
+                    break;
+
+                case Sound.Kill:
+                    fileName = "mouse_squeek.wav";
                     break;
             }
 
