@@ -63,7 +63,7 @@ namespace Doom3d
 
         public static void Main()
         {
-            Console.SetWindowSize(RenderSize.Width, RenderSize.Height);
+            // Console.SetWindowSize(RenderSize.Width, RenderSize.Height);
             Console.SetWindowPosition(0, 0);
 
             Console.Clear();
