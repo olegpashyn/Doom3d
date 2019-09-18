@@ -15,7 +15,7 @@
 
         public enum Sound
         {
-            Shoot
+            Shoot,
             Kill
         }
     }

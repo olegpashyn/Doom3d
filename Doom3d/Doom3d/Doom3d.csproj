@@ -61,6 +61,8 @@
     <Compile Include="RenderTarget.cs" />
     <Compile Include="ResetCommand.cs" />
     <Compile Include="Shoot.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="SpriteLibrary.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="media\mouse_squeek.wav" />

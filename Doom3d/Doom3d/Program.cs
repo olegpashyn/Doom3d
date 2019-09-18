@@ -16,11 +16,13 @@ namespace Doom3d
         private static PlayerShip _ship;
 
         private static Size _renderSize = new Size(100, 40);
+        private static Size _invaderSize = new Size(5, 3);
+        private static Size _shipSize = new Size(7, 3);
 
         public static void Main()
         {
             Console.SetWindowSize(120, 40);
-            _renderSize = new Size(Console.WindowWidth, Console.WindowHeight-1);
+            _renderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
 
             Reset();
             var inputThread = new Thread(InputManagerLoop) { IsBackground = true };
@@ -91,7 +93,8 @@ namespace Doom3d
         private static void Reset()
         {
             _gameobjects = new List<GameObject>();
-            _ship = new PlayerShip(_renderSize.Width / 2, _renderSize.Height - 2);
+            _ship = new PlayerShip(new Point(_renderSize.Width / 2, _renderSize.Height - _shipSize.Height),
+                _shipSize, new[] { ImageLibrary.OpenEyedCat, ImageLibrary.ClosedEyedCat });
             _invaders = new List<Invader>();
             ArrangeInvaders();
             _gameobjects.Add(_ship);
@@ -102,7 +105,8 @@ namespace Doom3d
         {
             for (int i = 0; i < 10; i++)
             {
-                _invaders.Add(new Invader(4 * i, 10, new Animatable(3, 3, 'O')));
+                _invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10, new Animatable(_invaderSize,
+                    new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
             }
         }
 
