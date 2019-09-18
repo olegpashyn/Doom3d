@@ -84,9 +84,18 @@ namespace Doom3d
                 }
                 else if (GameObjects.GameObjects.OfType<Invader>().Count() == 0)
                 {
-                    Win();
-                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
-                    break;
+                    if (_level >= 3)
+                    {
+                        Win();
+                        while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
+                        break;
+                    }
+                    else
+                    {
+                        SetInvaders(++_level);
+                        invMovingDirections = Direction.Right;
+                        invMovingCounter = InvadersMoveSize;
+                    }
                 }
                 else
                 {
@@ -94,25 +103,16 @@ namespace Doom3d
                     {
                         loopCounter = LoopWaitingBound;
 
-                        if (GameObjects.GameObjects.OfType<Invader>().Count() > 0)
+                        CommandExecute();
+                        if (--invMovingCounter > 0)
                         {
-                            CommandExecute();
-                            if (--invMovingCounter > 0)
-                            {
-                                MoveInvaders(invMovingDirections);
-                            }
-                            else
-                            {
-                                invMovingCounter = InvadersMoveSize;
-                                invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
-                                MoveInvaders(Direction.Down);
-                            }
+                            MoveInvaders(invMovingDirections);
                         }
                         else
                         {
-                            SetInvaders(++_level);
-                            invMovingDirections = Direction.Right;
                             invMovingCounter = InvadersMoveSize;
+                            invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
+                            MoveInvaders(Direction.Down);
                         }
                     }
                     InvadersBomb();
