@@ -63,8 +63,10 @@ namespace Doom3d
 
         public static void Main()
         {
-            Console.SetWindowSize(RenderSize.Width, RenderSize.Height);
-
+            Console.Clear();
+            Console.WriteLine(File.ReadAllText(@"media\start frame.txt"));
+            while (Console.ReadKey().Key != ConsoleKey.Enter) ;
+            Console.Clear();
             RenderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
             Reset();
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
@@ -83,7 +85,7 @@ namespace Doom3d
                 if (_ship.Exploded || MiceReachedBottom())
                 {
                     GameOver();
-                    while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
                     break;
                 }
                 else if (GameObjects.GameObjects.OfType<Invader>().Count() == 0)

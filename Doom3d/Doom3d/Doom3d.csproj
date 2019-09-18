@@ -83,6 +83,9 @@
     <Content Include="media\Shoot.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="media\start frame.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\theme.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
