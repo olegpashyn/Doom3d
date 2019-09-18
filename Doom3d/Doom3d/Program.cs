@@ -73,6 +73,8 @@ namespace Doom3d
                 if (_ship.Exploded)
                 {
                     GameOver();
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape)
+                        ;
                     break;
                 }
                 else
@@ -135,7 +137,6 @@ namespace Doom3d
             Console.Clear();
             var file = File.ReadAllText(@"media\sad cat.txt");
             Console.WriteLine(file);
-            Console.ReadKey();
         }
 
         public static void DetectCollisions()
@@ -221,7 +222,7 @@ namespace Doom3d
                 return;
             }
 
-            var key = Console.ReadKey();
+            var key = Console.ReadKey(true);
             switch (key.Key)
             {
                 case ConsoleKey.LeftArrow:
