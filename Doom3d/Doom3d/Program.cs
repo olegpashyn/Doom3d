@@ -54,7 +54,7 @@ namespace Doom3d
 
         private static Size _invaderSize = new Size(5, 3);
         private static Size _shipSize = new Size(7, 3);
-        public static Size RenderSize = new Size(100, 40);
+        public static Size RenderSize = new Size(120, 50);
         public static readonly int InvaderCount = 10;
 
         public static int InvadersMoveSize = 10;
@@ -63,6 +63,8 @@ namespace Doom3d
 
         public static void Main()
         {
+            Console.SetWindowSize(RenderSize.Width, RenderSize.Height);
+
             RenderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
             Reset();
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
@@ -106,11 +108,12 @@ namespace Doom3d
                 }
                 else
                 {
+                    CommandExecute();
+
                     if (--loopCounter <= 0)
                     {
                         loopCounter = LoopWaitingBound;
 
-                        CommandExecute();
                         if (--invMovingCounter > 0)
                         {
                             MoveInvaders(invMovingDirections);
@@ -229,7 +232,7 @@ namespace Doom3d
             {
                 for (int i = 0; i < InvaderCount; i++)
                 {
-                    invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10 - 5 * lev, new Animatable(_invaderSize,
+                    invaders.Add(new Invader((_invaderSize.Width + 1) * i, 3 + 5 * lev, new Animatable(_invaderSize,
                         new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
                 }
             }

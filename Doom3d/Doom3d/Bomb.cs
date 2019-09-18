@@ -4,6 +4,8 @@ namespace Doom3d
 {
     internal class Bomb : GameObject, IExplode
     {
+        private int _updateCount;
+
         public Bomb(int x, int y, IRenderable renderable) : base(x, y, renderable)
         {
         }
@@ -17,7 +19,10 @@ namespace Doom3d
 
         public override void Update(RenderTarget renderTarget)
         {
-            Y = Y + 1;
+            if ((_updateCount++ % 2) == 0)
+            {
+                Y = Y + 1;
+            }
             Renderable.Render(renderTarget, new Point(X, Y));
         }
     }
