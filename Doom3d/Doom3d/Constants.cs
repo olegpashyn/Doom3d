@@ -21,7 +21,8 @@
             Kill,
             Lost,
             Win,
-            Theme
+            Theme,
+            Badums
         }
     }
 }

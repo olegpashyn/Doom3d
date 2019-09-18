@@ -91,10 +91,17 @@ namespace Doom3d
                     break;
                 }
 
+                if (NativeKeyboard.IsKeyDown(KeyCode.F10))
+                {
+                    EasterEgg();
+                    while (Console.ReadKey(true).Key != ConsoleKey.Enter);
+                    Reset();
+                }
+
                 if (_ship.Exploded || MiceReachedBottom())
                 {
                     GameOver();
-                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape);
                     break;
                 }
                 else if (GameObjects.GameObjects.OfType<Invader>().Count() == 0)
@@ -179,6 +186,14 @@ namespace Doom3d
             Console.Clear();
             PlaySound(Sound.Lost);
             var file = File.ReadAllText(@"media\sad cat.txt");
+            Console.WriteLine(file);
+        }
+
+        private static void EasterEgg()
+        {
+            Console.Clear();
+            PlaySound(Sound.Badums);
+            var file = File.ReadAllText(@"media\easter egg.txt");
             Console.WriteLine(file);
         }
 
@@ -328,6 +343,10 @@ namespace Doom3d
 
                 case Sound.Theme:
                     fileName = "theme.wav";
+                    break;
+
+                case Sound.Badums:
+                    fileName = "Badums.wav";
                     break;
             }
 

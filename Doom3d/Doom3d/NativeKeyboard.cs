@@ -10,7 +10,8 @@ internal enum KeyCode : int
     Space = 0x20,
     Left = 0x25,
     Right = 0x27,
-    Escape = 0x1B
+    Escape = 0x1B,
+    F10 = 0x79
 }
 
 /// <summary>

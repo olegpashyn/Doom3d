@@ -71,6 +71,12 @@
     <Compile Include="SpriteLibrary.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="media\Badums.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="media\easter egg.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="media\lost.wav">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
