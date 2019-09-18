@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text;
 
 namespace Doom3d
 {
@@ -39,12 +40,19 @@ namespace Doom3d
         public void Present()
         {
             Console.CursorVisible = false;
-            for (int i = 0; i < _surface.GetLength(0); ++i)
-                for (int j = 0; j < _surface.GetLength(1); ++j)
+            int width = _surface.GetLength(0);
+            StringBuilder sb = new StringBuilder();
+            sb.Length = width;
+            Console.SetCursorPosition(0, 0);
+            for (int j = 0; j < _surface.GetLength(1); ++j)
+            {
+                for (int i = 0; i < width; ++i)
                 {
-                    Console.SetCursorPosition(i, j);
-                    Console.Write(_surface[i, j]);
+                    char ch = _surface[i, j];
+                    sb[i] = ch >= ' ' ? ch : ' ';
                 }
+                Console.Write(sb.ToString());
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Constants
     {
-        public const int LoopWaitingTimeMs = 250;
+        public const int LoopWaitingTimeMs = 25;
         public const int InvadersMoveSize = 10;
 
         public enum Direction
