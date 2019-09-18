@@ -59,6 +59,8 @@ namespace Doom3d
 
         public static int InvadersMoveSize = 10;
 
+        private static bool IsSpaceDown;
+
         public static void Main()
         {
             RenderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
@@ -273,8 +275,17 @@ namespace Doom3d
 
             if (NativeKeyboard.IsKeyDown(KeyCode.Space))
             {
-                PlaySound(Sound.Shoot);
-                _shootCommand = new Shoot();
+                if (!IsSpaceDown)
+                {
+                    PlaySound(Sound.Shoot);
+                    _shootCommand = new Shoot();
+                    IsSpaceDown = true;
+                }
+            }
+            else
+            {
+                // recharge
+                IsSpaceDown = false;
             }
         }
 
