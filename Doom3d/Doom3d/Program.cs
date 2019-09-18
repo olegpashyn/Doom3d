@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Media;
 using System.Threading;
 using static Doom3d.Constants;
@@ -72,6 +73,7 @@ namespace Doom3d
                 if (_ship.Exploded)
                 {
                     GameOver();
+                    break;
                 }
                 else
                 {
@@ -95,7 +97,10 @@ namespace Doom3d
 
         private static void GameOver()
         {
-            throw new NotImplementedException();
+            Console.Clear();
+            var file = File.ReadAllText(@"media\sad cat.txt");
+            Console.WriteLine(file);
+            Console.ReadKey();
         }
 
         public static void DetectCollisions()

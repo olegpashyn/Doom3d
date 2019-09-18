@@ -2,10 +2,17 @@
 
 namespace Doom3d
 {
-    public class Bullet : GameObject
+    public class Bullet : GameObject, IExplode
     {
         public Bullet(int x, int y, IRenderable renderable) : base(x, y, renderable)
         {
+        }
+
+        public bool Exploded { get; private set; }
+
+        public void Explode()
+        {
+            Exploded = true;
         }
 
         public override void Update(RenderTarget renderTarget)
