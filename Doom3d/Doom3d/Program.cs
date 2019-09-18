@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -42,7 +41,7 @@ namespace Doom3d
 
     public class Program
     {
-        private static readonly ConcurrentQueue<ICommand> _userCommands = new ConcurrentQueue<ICommand>();
+        private static ICommand _userCommand = null;
         private static List<Invader> _invaders = new List<Invader>();
         private static RenderTarget _renderTarget;
         public static ObjectContainer GameObjects;
@@ -57,9 +56,7 @@ namespace Doom3d
             Console.SetWindowSize(120, 40);
             RenderSize = new Size(Console.WindowWidth, Console.WindowHeight - 1);
             Reset();
-            var inputThread = new Thread(InputManagerLoop) { IsBackground = true };
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
-            inputThread.Start();
             mainLoopThread.Start();
         }
 
@@ -67,6 +64,7 @@ namespace Doom3d
         {
             var invMovingDirections = Direction.Right;
             var invMovingCounter = InvadersMoveSize;
+            var loopCounter = LoopWaitingBound;
 
             while (true)
             {
@@ -77,21 +75,28 @@ namespace Doom3d
                 }
                 else
                 {
-                    CommandExecute();
-                    if (invMovingCounter-- > 0)
+                    if (--loopCounter <= 0)
                     {
-                        MoveInvaders(invMovingDirections);
-                    }
-                    else
-                    {
-                        invMovingCounter = InvadersMoveSize;
-                        invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
-                        MoveInvaders(Direction.Down);
+                        loopCounter = LoopWaitingBound;
+
+                        CommandExecute();
+                        if (--invMovingCounter > 0)
+                        {
+                            MoveInvaders(invMovingDirections);
+                        }
+                        else
+                        {
+                            invMovingCounter = InvadersMoveSize;
+                            invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
+                            MoveInvaders(Direction.Down);
+                        }
                     }
                     DetectCollisions();
                     Render();
                 }
-                Thread.Sleep(Constants.LoopWaitingTimeMs);
+                Thread.Sleep(LoopWaitingTimeMs);
+
+                CheckKey();
             }
         }
 
@@ -166,43 +171,42 @@ namespace Doom3d
 
         private static void CommandExecute()
         {
-            while (_userCommands.TryDequeue(out ICommand result))
+            if (_userCommand != null)
             {
-                if (result is IShipCommand)
-                {
-                    _ship.Execute(result as IShipCommand);
-                }
+                _ship.Execute(_userCommand as IShipCommand);
             }
+            _userCommand = null;
         }
 
-        public static void InputManagerLoop()
+        private static void CheckKey()
         {
-            while (true)
+            if (!Console.KeyAvailable)
             {
-                var key = Console.ReadKey();
-                switch (key.Key)
-                {
-                    case ConsoleKey.LeftArrow:
-                        _userCommands.Enqueue(new MoveLeft());
-                        break;
+                return;
+            }
 
-                    case ConsoleKey.RightArrow:
-                        _userCommands.Enqueue(new MoveRight());
-                        break;
+            var key = Console.ReadKey();
+            switch (key.Key)
+            {
+                case ConsoleKey.LeftArrow:
+                    _userCommand = new MoveLeft();
+                    break;
 
-                    case ConsoleKey.Spacebar:
-                        _userCommands.Enqueue(new Shoot());
-                        PlaySound(Sound.Shoot);
-                        break;
+                case ConsoleKey.RightArrow:
+                    _userCommand = new MoveRight();
+                    break;
 
-                    case ConsoleKey.Escape:
-                        _userCommands.Enqueue(new EscapeCommand());
-                        return;
+                case ConsoleKey.Spacebar:
+                    PlaySound(Sound.Shoot);
+                    _userCommand = new Shoot();
+                    break;
 
-                    default:
-                        break;
-                }
-                Thread.Sleep(Constants.LoopWaitingTimeMs);
+                case ConsoleKey.Escape:
+                    _userCommand = new EscapeCommand();
+                    return;
+
+                default:
+                    break;
             }
         }
 
