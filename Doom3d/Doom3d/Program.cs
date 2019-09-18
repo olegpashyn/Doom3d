@@ -227,7 +227,7 @@ namespace Doom3d
             {
                 for (int i = 0; i < InvaderCount; i++)
                 {
-                    invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10 - 5 * lev, new Animatable(_invaderSize,
+                    invaders.Add(new Invader((_invaderSize.Width + 1) * i, 3 + 5 * lev, new Animatable(_invaderSize,
                         new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
                 }
             }
