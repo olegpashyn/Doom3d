@@ -1,4 +1,6 @@
-﻿namespace Doom3d
+﻿using static Doom3d.Constants;
+
+namespace Doom3d
 {
     public abstract class GameObject
     {
@@ -13,5 +15,24 @@
         public int Y { get; protected set; }
 
         public IRenderable Renderable { get; }
+
+        public void Move(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    Y--;
+                    break;
+                case Direction.Down:
+                    Y++;
+                    break;
+                case Direction.Left:
+                    X--;
+                    break;
+                case Direction.Right:
+                    X++;
+                    break;
+            }
+        }
     }
 }
