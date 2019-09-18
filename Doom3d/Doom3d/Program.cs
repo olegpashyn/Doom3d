@@ -151,6 +151,7 @@ namespace Doom3d
         private static void GameOver()
         {
             Console.Clear();
+            PlaySound(Sound.Lost);
             var file = File.ReadAllText(@"media\sad cat.txt");
             Console.WriteLine(file);
         }
