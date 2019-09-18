@@ -9,7 +9,8 @@ internal enum KeyCode : int
 {
     Space = 0x20,
     Left = 0x25,
-    Right = 0x27
+    Right = 0x27,
+    Escape = 0x1B
 }
 
 /// <summary>
