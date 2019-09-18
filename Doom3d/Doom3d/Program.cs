@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading;
 using static Doom3d.Constants;
 
@@ -13,8 +14,13 @@ namespace Doom3d
         private static List<GameObject> _gameobjects = new List<GameObject>();
         private static PlayerShip _ship;
 
+        private static Size _renderSize = new Size(100, 40);
+
         public static void Main()
         {
+            Console.SetWindowSize(120, 40);
+            _renderSize = new Size(Console.WindowWidth, Console.WindowHeight-1);
+
             Reset();
             var inputThread = new Thread(InputManagerLoop) { IsBackground = true };
             var mainLoopThread = new Thread(MainGameLoop) { IsBackground = false };
@@ -84,7 +90,7 @@ namespace Doom3d
         private static void Reset()
         {
             _gameobjects = new List<GameObject>();
-            _ship = new PlayerShip(Console.WindowWidth / 2, Console.WindowHeight - 2);
+            _ship = new PlayerShip(_renderSize.Width / 2, _renderSize.Height - 2);
             _invaders = new List<Invader>();
             ArrangeInvaders();
             _gameobjects.Add(_ship);
@@ -95,7 +101,7 @@ namespace Doom3d
         {
             for (int i = 0; i < 10; i++)
             {
-                _invaders.Add(new Invader(4 * i, 10, new InvaderUi1()));
+                _invaders.Add(new Invader(4 * i, 10, new Animatable(3, 3, 'O')));
             }
         }
 
@@ -106,15 +112,15 @@ namespace Doom3d
 
         private static void Render()
         {
-            Console.Clear();
-            Console.SetCursorPosition(_ship.X, _ship.Y);
-            _ship.Renderable.Render();
+            var renderTarget = new RenderTarget(_renderSize);
+            _ship.Update(renderTarget);
 
             foreach (var invader in _invaders)
             {
-                Console.SetCursorPosition(invader.X, invader.Y);
-                invader.Renderable.Render();
+                invader.Update(renderTarget);
             }
+
+            renderTarget.Present();
         }
 
         private static void CommandExecute()

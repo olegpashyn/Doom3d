@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Doom3d
 {
     public class PlayerShip : GameObject, IExplode
     {
-        public PlayerShip(int initialX, int initialY) : base(initialX, initialY, new PlayerShipUi())
+        public PlayerShip(int initialX, int initialY) : base(initialX, initialY, new Animatable(2, 3, 'X'))
         {
+        }
+
+        public override void Update(RenderTarget renderTarget)
+        {
+            Renderable.Render(renderTarget, new Point(X, Y));
         }
 
         public void Execute(IShipCommand command)
@@ -23,7 +29,7 @@ namespace Doom3d
         public void Explode()
         {
             Exploded = true;
-            Renderable = new PlayerShipExploded();
+            //Renderable = new PlayerShipExploded();
         }
 
         public bool Exploded { get; private set; }

@@ -42,5 +42,6 @@ namespace Doom3d
                     break;
             }
         }
+        public abstract void Update(RenderTarget renderTarget);
     }
 }

@@ -1,18 +1,28 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Doom3d
 {
-    public class PlayerShipUi : IRenderable
+    public class Animatable : IRenderable
     {
-        public int Width { get; } = 3;
+        private readonly char _fillSymbol;
 
-        public int Height { get; } = 2;
+        public Animatable(int width, int height, char fillSymbol)
+        {
+            Width = width;
+            Height = height;
+            _fillSymbol = fillSymbol;
+        }
 
-        public void Render()
+        public int Width { get; }
+
+        public int Height { get; }
+
+        public void Render(RenderTarget renderTarget, Point position)
         {
             for (var i = 0; i < Width; i++)
                 for (var j = 0; j < Height; j++)
-                    Console.Write("X");
+                    renderTarget.Put(position.X + i, position.Y + j, _fillSymbol);
         }
     }
 }
