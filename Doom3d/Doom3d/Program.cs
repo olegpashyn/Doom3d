@@ -78,6 +78,11 @@ namespace Doom3d
 
             while (true)
             {
+                if (NativeKeyboard.IsKeyDown(KeyCode.Escape))
+                {
+                    break;
+                }
+
                 if (_ship.Exploded || MiceReachedBottom())
                 {
                     GameOver();
