@@ -41,7 +41,8 @@ namespace Doom3d
 
     public class Program
     {
-        private static ICommand _userCommand = null;
+        private static ICommand _moveCommand = null;
+        private static ICommand _shootCommand = null;
         private static List<Invader> _invaders = new List<Invader>();
         private static RenderTarget _renderTarget;
         public static ObjectContainer GameObjects;
@@ -171,11 +172,17 @@ namespace Doom3d
 
         private static void CommandExecute()
         {
-            if (_userCommand != null)
+            if (_shootCommand != null)
             {
-                _ship.Execute(_userCommand as IShipCommand);
+                _ship.Execute(_shootCommand as IShipCommand);
             }
-            _userCommand = null;
+            _shootCommand = null;
+
+            if (_moveCommand != null)
+            {
+                _ship.Execute(_moveCommand as IShipCommand);
+            }
+            _moveCommand = null;
         }
 
         private static void CheckKey()
@@ -189,20 +196,20 @@ namespace Doom3d
             switch (key.Key)
             {
                 case ConsoleKey.LeftArrow:
-                    _userCommand = new MoveLeft();
+                    _moveCommand = new MoveLeft();
                     break;
 
                 case ConsoleKey.RightArrow:
-                    _userCommand = new MoveRight();
+                    _moveCommand = new MoveRight();
                     break;
 
                 case ConsoleKey.Spacebar:
                     PlaySound(Sound.Shoot);
-                    _userCommand = new Shoot();
+                    _shootCommand = new Shoot();
                     break;
 
                 case ConsoleKey.Escape:
-                    _userCommand = new EscapeCommand();
+                    _moveCommand = new EscapeCommand();
                     return;
 
                 default:
