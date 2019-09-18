@@ -44,8 +44,10 @@ namespace Doom3d
     {
         private static ICommand _moveCommand = null;
         private static ICommand _shootCommand = null;
-        private static List<Invader> _invaders = new List<Invader>();
+
+        //private static List<Invader> _invaders = new List<Invader>();
         private static RenderTarget _renderTarget;
+
         public static ObjectContainer GameObjects;
         private static PlayerShip _ship;
 
@@ -108,13 +110,14 @@ namespace Doom3d
         private static void InvadersBomb()
         {
             var botRowInvaders = new List<Invader>();
-            foreach (var invader in _invaders)
+            var invaders = GameObjects.GameObjects.OfType<Invader>();
+            foreach (var invader in invaders)
             {
                 if (botRowInvaders.Any(b => b.X == invader.X))
                     continue;
 
                 Invader maxY = invader;
-                foreach (var inv in _invaders)
+                foreach (var inv in invaders)
                 {
                     if (inv.X == invader.X && inv.Y < invader.Y)
                         continue;
@@ -167,25 +170,26 @@ namespace Doom3d
         {
             var gameobjects = new List<GameObject>();
             _ship = new PlayerShip(new Point(RenderSize.Width / 2, RenderSize.Height - _shipSize.Height), _shipSize, new[] { ImageLibrary.OpenEyedCat, ImageLibrary.ClosedEyedCat });
-            _invaders = new List<Invader>();
-            ArrangeInvaders();
-            _invaders.ForEach(g => gameobjects.Add(g));
+            var invaders = ArrangeInvaders();
+            invaders.ForEach(g => gameobjects.Add(g));
             GameObjects = new ObjectContainer(gameobjects);
             GameObjects.AddGameObject(_ship);
         }
 
-        private static void ArrangeInvaders()
+        private static List<Invader> ArrangeInvaders()
         {
+            var invaders = new List<Invader>();
             for (int i = 0; i < 10; i++)
             {
-                _invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10, new Animatable(_invaderSize,
+                invaders.Add(new Invader((_invaderSize.Width + 1) * i, 10, new Animatable(_invaderSize,
                     new[] { ImageLibrary.OpenEyedMouse, ImageLibrary.ClosedEyedMouse })));
             }
+            return invaders;
         }
 
         private static void MoveInvaders(Direction direction)
         {
-            _invaders.ForEach(inv => inv.Move(direction));
+            GameObjects.GameObjects.OfType<Invader>().ToList().ForEach(inv => inv.Move(direction));
         }
 
         private static void Render()
