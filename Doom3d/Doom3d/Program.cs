@@ -75,8 +75,13 @@ namespace Doom3d
                 if (_ship.Exploded)
                 {
                     GameOver();
-                    while (Console.ReadKey(true).Key != ConsoleKey.Escape)
-                        ;
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape);
+                    break;
+                }
+                else if (GameObjects.GameObjects.OfType<Invader>().Count() == 0)
+                {
+                    Win();
+                    while (Console.ReadKey(true).Key != ConsoleKey.Escape) ;
                     break;
                 }
                 else
@@ -139,6 +144,14 @@ namespace Doom3d
         {
             Console.Clear();
             var file = File.ReadAllText(@"media\sad cat.txt");
+            Console.WriteLine(file);
+        }
+
+        private static void Win()
+        {
+            Console.Clear();
+            PlaySound(Sound.Win);
+            var file = File.ReadAllText(@"media\wining cat.txt");
             Console.WriteLine(file);
         }
 
