@@ -29,27 +29,55 @@ namespace Doom3d
 
             while (true)
             {
-                CommandExecute();
-                if (invMovingCounter-- > 0)
+                if (_ship.Exploded)
                 {
-                    MoveInvaders(invMovingDirections);
+                    GameOver();
                 }
                 else
                 {
-                    invMovingCounter = InvadersMoveSize;
-                    invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
-                    MoveInvaders(Direction.Down);
+                    CommandExecute();
+                    if (invMovingCounter-- > 0)
+                    {
+                        MoveInvaders(invMovingDirections);
+                    }
+                    else
+                    {
+                        invMovingCounter = InvadersMoveSize;
+                        invMovingDirections = invMovingDirections == Direction.Left ? Direction.Right : Direction.Left;
+                        MoveInvaders(Direction.Down);
+                    }
+                    DetectCollisions();
+                    Render();
                 }
-                DetectCollisions();
-                Render();
                 Thread.Sleep(Constants.LoopWaitingTimeMs);
             }
         }
 
+        private static void GameOver()
+        {
+            throw new NotImplementedException();
+        }
+
         public static void DetectCollisions()
         {
-            foreach (var gameobject in _gameobjects)
+            for (var i = 0; i < _gameobjects.Count; i++)
             {
+                for (var j = i + 1; j < _gameobjects.Count; j++)
+                {
+                    var firstGameObject = _gameobjects[i];
+                    var secondGameObject = _gameobjects[j];
+
+                    if (firstGameObject.X < secondGameObject.X + secondGameObject.Renderable.Width &&
+                        firstGameObject.X + firstGameObject.Renderable.Width > secondGameObject.X &&
+                        firstGameObject.Y > secondGameObject.Y + secondGameObject.Renderable.Height &&
+                        firstGameObject.Y + firstGameObject.Renderable.Height < secondGameObject.Y)
+                    {
+                        if (firstGameObject is IExplode)
+                            ((IExplode)firstGameObject).Explode();
+                        if (secondGameObject is IExplode)
+                            ((IExplode)secondGameObject).Explode();
+                    }
+                }
             }
         }
 

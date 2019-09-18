@@ -2,7 +2,7 @@
 
 namespace Doom3d
 {
-    public class PlayerShip : GameObject
+    public class PlayerShip : GameObject, IExplode
     {
         public PlayerShip(int initialX, int initialY) : base(initialX, initialY, new PlayerShipUi())
         {
@@ -19,5 +19,13 @@ namespace Doom3d
                 X = X + 1;
             }
         }
+
+        public void Explode()
+        {
+            Exploded = true;
+            Renderable = new PlayerShipExploded();
+        }
+
+        public bool Exploded { get; private set; }
     }
 }
