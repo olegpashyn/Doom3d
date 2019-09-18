@@ -5,13 +5,14 @@ namespace Doom3d
 {
     public class Animatable : IRenderable
     {
-        private readonly char _fillSymbol;
+        private readonly Image[] _images;
+        private int _index;
 
-        public Animatable(int width, int height, char fillSymbol)
+        public Animatable(Size size, Image[] images)
         {
-            Width = width;
-            Height = height;
-            _fillSymbol = fillSymbol;
+            Width = size.Width;
+            Height = size.Height;
+            _images = images;
         }
 
         public int Width { get; }
@@ -20,9 +21,8 @@ namespace Doom3d
 
         public void Render(RenderTarget renderTarget, Point position)
         {
-            for (var i = 0; i < Width; i++)
-                for (var j = 0; j < Height; j++)
-                    renderTarget.Put(position.X + i, position.Y + j, _fillSymbol);
+            renderTarget.Put(position, _images[_index]);
+            _index = (_index + 1) % _images.Length;
         }
     }
 }

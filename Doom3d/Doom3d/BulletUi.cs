@@ -1,9 +1,8 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 
 namespace Doom3d
 {
-    internal class PlayerShipExploded : IRenderable
+    internal class BulletUi : IRenderable
     {
         public int Width => 1;
 
@@ -11,7 +10,7 @@ namespace Doom3d
 
         public void Render(RenderTarget renderTarget, Point position)
         {
-            throw new NotImplementedException();
+            renderTarget.Put(position.X, position.Y, '*');
         }
     }
 }
